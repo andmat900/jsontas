@@ -14,13 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Distribution name and version."""
-from pkg_resources import get_distribution, DistributionNotFound
-
 try:
+    from importlib.metadata import version, PackageNotFoundError
     # Change here if project is renamed and does not equal the package name
     DIST_NAME = __name__
-    __version__ = get_distribution(DIST_NAME).version
-except DistributionNotFound:
-    __version__ = 'unknown'
+    __version__ = version(DIST_NAME)
+except PackageNotFoundError:
+    version = "unknown"
 finally:
-    del get_distribution, DistributionNotFound
+    try:
+        del version, PackageNotFoundError
+    except NameError:
+        pass
