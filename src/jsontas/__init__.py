@@ -14,20 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Distribution name and version."""
+from importlib.metadata import version, PackageNotFoundError
+
 try:
-    from importlib.metadata import version, PackageNotFoundError
-    # Change here if project is renamed and does not equal the package name
     DIST_NAME = __name__
     __version__ = version(DIST_NAME)
 except PackageNotFoundError:
-    # Fallback for development mode when package isn't installed
-    try:
-        from setuptools_scm import get_version
-        __version__ = get_version(root='..')
-    except (ImportError, LookupError):
-        __version__ = "unknown"
+    __version__ = "unknown"
 finally:
-    try:
-        del version, PackageNotFoundError
-    except NameError:
-        pass
+    del version, PackageNotFoundError
